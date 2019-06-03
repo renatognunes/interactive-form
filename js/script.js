@@ -1,3 +1,5 @@
+//Basic Info Section
+
 // Focus in the first input element of the form, in this case, 'Name' is the first input to be filled out.
 $('#name').focus();
 
@@ -11,6 +13,9 @@ $('#title').on('change', () => {
         $('#other-title').hide();
     }
 });
+
+
+//T-Shirt Info
 
 //Hides the 'Select Theme' option when the user clicks to select the design.
 $('#design').on('focus', () => {
@@ -39,6 +44,9 @@ $('#design').on('change', () => {
     }
 });
 
+
+//Register for Activities
+
 //hold the total cost of all selected activities.
 let totalCost = 0;
 //Creates an element in the DOM to display the total cost.
@@ -63,19 +71,49 @@ $('.activities').on('change', (e) => {
     //it displayes the total cost and keeps the total cost updated every time there is a change in the event.
     $('.activities span').text(`Total: $${totalCost}`);
 
-
-    let dayIndex = inputText.indexOf('—');
-    let timeIndex = inputText.indexOf(',');
-    let schedule = inputText.slice(dayIndex, timeIndex);
-    //console.log(schedule);
-    $('.activities input').each(function (i){
+    // It fins the spot where the day and time starts in that text content.
+    let dateStartIndex = inputText.indexOf('—');
+    // It fins the spott where the day and time ends in that text content.
+    let dateEndIndex = inputText.indexOf(',');
+    //Extract the date from the text content.
+    let date = inputText.slice(dateStartIndex, dateEndIndex);
+    //It loops through all input elements to find activities with the same date.
+    $('.activities input').each(function (i) {
         let $checkbox = $('.activities input')[i];
-       if($checkbox.parentNode.textContent.includes(schedule) && $checkbox.parentNode.textContent !== inputText ) {
-        if(input.checked) {
-            $checkbox.disabled = true;
-        } else {
-            $checkbox.disabled = false;
+        //If an activity has been checked it will disable all activities with the same date and vice and verse.
+        if ($checkbox.parentNode.textContent.includes(date) && $checkbox.parentNode.textContent !== inputText) {
+            if (input.checked) {
+                $checkbox.disabled = true;
+            } else {
+                $checkbox.disabled = false;
+            }
         }
-       }
-        });
+    });
+});
+
+
+//Payment Info
+
+//It sets the credit card option as the first and default option
+$('#payment option[value="select_method"]').hide();
+$('#payment').val($('#payment option[value="credit card"]').val());
+$('p').hide();
+
+//This event listener hides and shows the payment's instruction for the payment method selected
+$('#payment').on('change', () => {
+    const $paymentSelected = $('#payment').val();
+    if ($paymentSelected === 'paypal') {
+        $('#credit-card').hide();
+        $('p').eq(1).hide();
+        $('p').eq(0).show();
+    } else if ($paymentSelected === 'bitcoin') {
+        $('#credit-card').hide();
+        $('p').eq(0).hide();
+        $('p').eq(1).show();
+    } else {
+        $('#credit-card').show();
+        $('p').hide();
+    }
 })
+
+
