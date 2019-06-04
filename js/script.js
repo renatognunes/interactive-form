@@ -117,3 +117,113 @@ $('#payment').on('change', () => {
 })
 
 
+//Validation 
+function isValidName(name) {
+    let validator = /^\S/.test(name);
+    if (validator) {
+        $('#name').prev().removeClass('errorLabel');
+        $('#name').removeClass('errorInput');
+        return true;
+    } else {
+        $('#name').prev().addClass('errorLabel');
+        $('#name').addClass('errorInput');
+        return false;
+    }
+};
+
+function isValidEmail(email) {
+    let validator = /^[^@]+@[^@.]+\.[a-z]+$/i.test(email);
+    if (validator) {
+        $('#mail').prev().removeClass('errorLabel');
+        $('#mail').removeClass('errorInput');
+        return true;
+    } else {
+        $('#mail').prev().addClass('errorLabel');
+        $('#mail').addClass('errorInput');
+        return false;
+    }
+};
+
+function isActivityCheck() {
+    const $checkbox = $('.activities input');
+    for (let i = 0; i < $checkbox.length; i++) {
+        check = $checkbox[i]
+        if (check.checked) {
+            $('.activities legend').removeClass('errorLabel');
+            return true
+        }
+    };
+    $('.activities legend').addClass('errorLabel');
+    return false
+};
+
+function isValidCcNumber(ccNumber) {
+    const $paymentSelected = $('#payment').val();
+    if ($paymentSelected === 'credit card') {
+        let validator = /^\d{13,16}$/.test(ccNumber);
+        if (validator) {
+            $('#cc-num').prev().removeClass('errorLabel');
+            $('#cc-num').removeClass('errorInput');
+            return true;
+        } else {
+            $('#cc-num').prev().addClass('errorLabel');
+            $('#cc-num').addClass('errorInput');
+            return false;
+        }
+    } else {
+        return true;
+    }
+};
+
+function isValidZipCode(zipCode) {
+    const $paymentSelected = $('#payment').val();
+    if ($paymentSelected === 'credit card') {
+        let validator = /^\d{5}$/.test(zipCode);
+        if (validator) {
+            $('#zip').prev().removeClass('errorLabel');
+            $('#zip').removeClass('errorInput');
+            return true;
+        } else {
+            $('#zip').prev().addClass('errorLabel');
+            $('#zip').addClass('errorInput');
+            return false;
+        }
+    } else {
+        return true;
+    }
+};
+
+function isValidCvv(cvv) {
+    const $paymentSelected = $('#payment').val();
+    if ($paymentSelected === 'credit card') {
+        let validator = /^\d{3}$/.test(cvv);
+        if (validator) {
+            $('#cvv').prev().removeClass('errorLabel');
+            $('#cvv').removeClass('errorInput');
+            return true;
+        } else {
+            $('#cvv').prev().addClass('errorLabel');
+            $('#cvv').addClass('errorInput');
+            return false;
+        }
+    } else {
+        return true;
+    }
+};
+
+function validation() {
+    let result;
+    result = isValidName($('#name').val());
+    result = isValidEmail($('#mail').val()) && result;
+    result = isActivityCheck() && result;
+    result = isValidCcNumber($('#cc-num').val()) && result;
+    result = isValidZipCode($('#zip').val()) && result;
+    result = isValidCvv($('#cvv').val()) && result;
+    return result;
+}
+
+$('form').on('submit', (e) => {
+    if (validation() === false) {
+        e.preventDefault();
+    }
+})

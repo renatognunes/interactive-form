@@ -36,6 +36,13 @@ a {
   Form Element Styles
 ==================================== */
 
+.errorLabel {
+	color: red;
+}
+.errorInput {
+	border: 1px solid red;
+}
+
 form {
 	padding: .875em 1.875em 1.875em;
 	background: #85b5ca;
