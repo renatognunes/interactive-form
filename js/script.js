@@ -1,4 +1,4 @@
-//Basic Info Section
+/* Basic Info Section */
 
 // Focus in the first input element of the form, in this case, 'Name' is the first input to be filled out.
 $('#name').focus();
@@ -15,7 +15,7 @@ $('#title').on('change', () => {
 });
 
 
-//T-Shirt Info
+/* T-Shirt Info */
 
 //Hides the 'Select Theme' option when the user clicks to select the design.
 $('#design').on('focus', () => {
@@ -45,12 +45,12 @@ $('#design').on('change', () => {
 });
 
 
-//Register for Activities
+/* Register for Activities */
 
 //hold the total cost of all selected activities.
 let totalCost = 0;
 //Creates an element in the DOM to display the total cost.
-$('.activities').append('<span></span>');
+$('.activities').append('<span class="totalPrice"></span>');
 
 //This event listener add (when checked) and subtract (when unchecked) the price of the activity to the total cost.
 $('.activities').on('change', (e) => {
@@ -69,7 +69,7 @@ $('.activities').on('change', (e) => {
         totalCost -= parseInt(price);
     }
     //it displayes the total cost and keeps the total cost updated every time there is a change in the event.
-    $('.activities span').text(`Total: $${totalCost}`);
+    $('.activities span').eq(0).text(`Total: $${totalCost}`);
 
     // It fins the spot where the day and time starts in that text content.
     let dateStartIndex = inputText.indexOf('—');
@@ -84,15 +84,17 @@ $('.activities').on('change', (e) => {
         if ($checkbox.parentNode.textContent.includes(date) && $checkbox.parentNode.textContent !== inputText) {
             if (input.checked) {
                 $checkbox.disabled = true;
+                $checkbox.parentElement.classList.add("disabled");
             } else {
                 $checkbox.disabled = false;
+                $checkbox.parentElement.classList.remove("disabled");
             }
         }
     });
 });
 
 
-//Payment Info
+/* Payment Info */
 
 //It sets the credit card option as the first and default option
 $('#payment option[value="select_method"]').hide();
@@ -117,55 +119,85 @@ $('#payment').on('change', () => {
 })
 
 
-//Validation 
+/* Validation */
+
+// Creating and appending the error messages to the DOM
+$('label[for="name"]').before(`<span id="error-name" class="errorMessage">⚠️ Name field can't be blank</span>`);
+$('label[for="mail"]').before(`<span id="error-mail" class="errorMessage">⚠️ Email field must be a valid e-mail address</span>`);
+$('.activities').append(`<span id="error-act" class="errorMessage">⚠️ You must select at least one activity</span>`);
+$('#credit-card').before(`<span id="error-card" class="errorMessage">⚠️ The card number must be between 13 and 16 digits</span>`);
+$('#credit-card').before(`<span id="error-zip" class="errorMessage">⚠️ The Zip Code field should be 5-digit number</span>`);
+$('#credit-card').before(`<span id="error-cvv" class="errorMessage">⚠️ The CVV should be exactly 3 digits long</span>`);
+
+//Hide all the error messages from the DOM as initially default
+$('.errorMessage').hide();
+
+
+// Name Validator
 function isValidName(name) {
+    //Using Regex to make sure the user doesn't submit an empty field.
     let validator = /^\S/.test(name);
     if (validator) {
+        $('#error-name').hide();
         $('#name').prev().removeClass('errorLabel');
         $('#name').removeClass('errorInput');
         return true;
     } else {
+        $('#error-name').show();
         $('#name').prev().addClass('errorLabel');
         $('#name').addClass('errorInput');
         return false;
     }
 };
 
+// Email Validator
 function isValidEmail(email) {
+    //Using Regex to make sure the user submits a valid email format.
     let validator = /^[^@]+@[^@.]+\.[a-z]+$/i.test(email);
     if (validator) {
+        $('#error-mail').hide();
         $('#mail').prev().removeClass('errorLabel');
         $('#mail').removeClass('errorInput');
         return true;
     } else {
+        $('#error-mail').show();
         $('#mail').prev().addClass('errorLabel');
         $('#mail').addClass('errorInput');
         return false;
     }
 };
 
+//Activities Validator
 function isActivityCheck() {
     const $checkbox = $('.activities input');
+    //Looping through all checkboxes to make sure the user has checked at least one activity
     for (let i = 0; i < $checkbox.length; i++) {
         check = $checkbox[i]
         if (check.checked) {
+            $('#error-act').hide();
             $('.activities legend').removeClass('errorLabel');
             return true
-        }
+        };
     };
+    $('#error-act').show();
     $('.activities legend').addClass('errorLabel');
     return false
 };
 
+//Credit Cart Validator
 function isValidCcNumber(ccNumber) {
     const $paymentSelected = $('#payment').val();
+    //If the credit card option is selected, enable validator.
     if ($paymentSelected === 'credit card') {
+        //Using Regex to make sure the user provides a valid credit card number
         let validator = /^\d{13,16}$/.test(ccNumber);
         if (validator) {
+            $('#error-card').hide();
             $('#cc-num').prev().removeClass('errorLabel');
             $('#cc-num').removeClass('errorInput');
             return true;
         } else {
+            $('#error-card').show();
             $('#cc-num').prev().addClass('errorLabel');
             $('#cc-num').addClass('errorInput');
             return false;
@@ -175,15 +207,20 @@ function isValidCcNumber(ccNumber) {
     }
 };
 
+// Zip Code Validator
 function isValidZipCode(zipCode) {
     const $paymentSelected = $('#payment').val();
+    //If the credit card option is selected, enable validator.
     if ($paymentSelected === 'credit card') {
+        //Using Regex to make sure the user provides a valid Zip Code.
         let validator = /^\d{5}$/.test(zipCode);
         if (validator) {
+            $('#error-zip').hide();
             $('#zip').prev().removeClass('errorLabel');
             $('#zip').removeClass('errorInput');
             return true;
         } else {
+            $('#error-zip').show();
             $('#zip').prev().addClass('errorLabel');
             $('#zip').addClass('errorInput');
             return false;
@@ -193,15 +230,20 @@ function isValidZipCode(zipCode) {
     }
 };
 
+// CVV Validator
 function isValidCvv(cvv) {
     const $paymentSelected = $('#payment').val();
+    //If the credit card option is selected, enable validator.
     if ($paymentSelected === 'credit card') {
+        //Using Regex to make sure the user provides a valid CVV.
         let validator = /^\d{3}$/.test(cvv);
         if (validator) {
+            $('#error-cvv').hide();
             $('#cvv').prev().removeClass('errorLabel');
             $('#cvv').removeClass('errorInput');
             return true;
         } else {
+            $('#error-cvv').show();
             $('#cvv').prev().addClass('errorLabel');
             $('#cvv').addClass('errorInput');
             return false;
@@ -211,7 +253,33 @@ function isValidCvv(cvv) {
     }
 };
 
-function validation() {
+
+/* This Event Listener is a "RESET" for credit card errors warning, in case the user switches to Paypal or Bitcoin
+ after trying credit card option unsuccessfully, the messages and display warning must be removed when switching
+ to a different option */
+$('#payment').on('change', () => {
+    const $paymentSelected = $('#payment').val();
+    //If the payment option is paypal or bitcoin all error messages from previews credit card attemped must be removed.
+    if ($paymentSelected === 'paypal' || $paymentSelected === 'bitcoin') {
+        $('#error-card').hide();
+        $('#error-cvv').hide();
+        $('#error-zip').hide();
+        $('#cc-num').prev().removeClass('errorLabel');
+        $('#cc-num').removeClass('errorInput');
+        $('#cvv').prev().removeClass('errorLabel');
+        $('#cvv').removeClass('errorInput');
+        $('#zip').prev().removeClass('errorLabel');
+        $('#zip').removeClass('errorInput');
+
+    };
+})
+
+
+/*This (Master) funtion calls all validators and store the boolean value returned from each function in a variable.
+This value is compared to the next validator and the result is stored in the same variable. All validator must return
+true otherwise, this function will return false.
+*/
+function isFormValid() {
     let result;
     result = isValidName($('#name').val());
     result = isValidEmail($('#mail').val()) && result;
@@ -222,8 +290,11 @@ function validation() {
     return result;
 }
 
+
+//Event listener prevent the browser to send the information to the server in case the form has an invalid field.
 $('form').on('submit', (e) => {
-    if (validation() === false) {
+    //If the isFormValid function returns false (based on the validator functions), the button won't submit the data.
+    if (isFormValid() === false) {
         e.preventDefault();
     }
-})
+});

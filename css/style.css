@@ -9,13 +9,13 @@
 body,
 input,
 button {
- font-family: 'Roboto', sans-serif;
+ font-family: Arial, Helvetica, sans-serif, sans-serif;
 }
 
 body {
-  font: 1em/1.5;
-  color: #184f68;
-	background: #accbd9;
+  font-size: 1em/1.5;
+  color: rgb(255, 255, 255);
+	background: #fff;
 }
 
 header {
@@ -24,6 +24,7 @@ header {
 
 h1 {
 	font-size: 2.5em;
+	color: rgb(48, 88, 122);
 	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
 	margin: 0;
 }
@@ -36,16 +37,46 @@ a {
   Form Element Styles
 ==================================== */
 
+/* ----- Added by Student ----- */
+
+.disabled {
+	color: rgb(189, 189, 189);
+  }
+
+span {
+	color: rgb(48, 88, 122);
+}
+
 .errorLabel {
-	color: red;
+	color: #ff6363;
 }
 .errorInput {
-	border: 1px solid red;
+	border: 2px solid #ff6363;
 }
+
+.errorMessage {
+	font-size: .9em;
+	text-align: center;
+	background: #ff6363;
+	border-radius: 3px;
+	padding: 5px;
+	margin: 6px auto 0 auto;
+	color: rgb(255, 255, 255);
+	width: 60%;
+	display: block;
+	position: relative;
+  }
+
+  .totalPrice {
+	  color: rgb(255, 255, 255);
+  }
+
+ /* --------------------------- */ 
 
 form {
 	padding: .875em 1.875em 1.875em;
-	background: #85b5ca;
+	background: rgb(62, 118, 167);
+	border-radius: 5px;
 }
 
 fieldset,
@@ -61,13 +92,13 @@ fieldset {
 
 legend,
 button {
-	font-size: 1.25em;	
+	font-size: 1.5em;	
 }
 
 legend {
-	font-weight: 500;
-	padding-top: .5em;
-	border-top: 2px solid #679cb3;
+	font-weight: 700;
+	padding-top: .8em;
+	border-top: 3px solid rgb(48, 88, 122);
 	margin-bottom: 1.125em;
 }
 
@@ -78,7 +109,7 @@ legend {
 }
 
 label {
-	color: #000;
+	color: rgb(231, 243, 255);
 	display: block;
 	margin-bottom: .5em;
 }
@@ -92,14 +123,15 @@ input {
 	font-size: 1em;
 	font-weight: 500;
 	padding: .8em;
-	background: #c1deeb;
-	border: 2px solid #c1deeb;
+	background: rgb(241, 240, 240);
+	border: 2px solid #acd1e2;
 	outline: none;
+	border-radius: 3px;
 }
 
 input:focus {
 	background: #fff;
-	border-color: #5e97b0;
+	border-color: rgb(48, 88, 122);
 	transition: border-color .4s, background-color .4s;
 }
 
@@ -109,15 +141,17 @@ input[type="radio"] {
 }
 
 button {
-	color: #fff;
+	color: rgb(59, 59, 59);
 	padding: .55em 1.25em;
-	background: #22627e;
-	margin: 1.25em 0 .5em;
+	background: rgb(235, 235, 235);
+	margin: 1rem auto;
 	cursor: pointer;
+	display: block;
+	border-radius: 3px;
 }
 
 button:hover {
-	background: #184c62;
+	background: rgb(255, 255, 255);
 }
 
 /* ================================= 
@@ -139,7 +173,7 @@ button:hover {
 }
 
 .credit-card {
-	margin-top: 1.25em;
+	margin-top: 1.1em;
 }
 
 /* ================================= 
