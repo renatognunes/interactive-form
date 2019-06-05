@@ -4,26 +4,26 @@ The Project takes a static form and turns it into an interactive form. Adding fu
 
 
 Languages:
-HTML5
-CSS3
-Javascript
+- HTML5
+- CSS3
+- Javascript
 
 Library:
-jQuery
+- jQuery
 
 Tools:
-Visual Studio Code
-DevTools Google Chrome
-Terminal/Git
+- Visual Studio Code
+- DevTools Google Chrome
+- Terminal/Git
 
 Basics methods and technics:
-jQuery methods
-Real-Time Event Listeners
-Regular Expressions Regex
-DOM Manipulating
-DOM Traversal (node tree and relationships)
-Arrow Functions
-Loopings and Conditionals
-Events and Handlers
-Debugging
-CSS Selectors
+- jQuery methods
+- Real-Time Event Listeners
+- Regular Expressions Regex
+- DOM Manipulating
+- DOM Traversal (node tree and relationships)
+- Arrow Functions
+- Loopings and Conditionals
+- Events and Handlers
+- Debugging
+- CSS Selectors
