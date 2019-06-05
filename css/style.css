@@ -37,7 +37,7 @@ a {
   Form Element Styles
 ==================================== */
 
-/* ----- Added by Student ----- */
+/* ========= Added by Student ========= */
 
 .disabled {
 	color: rgb(189, 189, 189);
@@ -70,8 +70,7 @@ span {
   .totalPrice {
 	  color: rgb(255, 255, 255);
   }
-
- /* --------------------------- */ 
+ /* ==================================== */
 
 form {
 	padding: .875em 1.875em 1.875em;
