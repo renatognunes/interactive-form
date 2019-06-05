@@ -14,8 +14,10 @@ $('#title').on('change', () => {
     }
 });
 
-
 /* T-Shirt Info */
+
+//Initially hides the Color label and Select Menu until a T-shirt design is selected.
+$('#colors-js-puns').hide();
 
 //Hides the 'Select Theme' option when the user clicks to select the design.
 $('#design').on('focus', () => {
@@ -28,6 +30,8 @@ $('#color').append('<option value="default" disabled selected>Please select a T-
 
 //This event listener sets the color options for the t-shirt based on the t-shirt's design selected.
 $('#design').on('change', () => {
+    //It shows the color options to the t-shirt design selected.
+    $('#colors-js-puns').show()
     // Remove the default 'placeholder' for color options when the a design option is selected.
     $('#color option[value="default"]').remove();
     // Hold the value of the design selected.
@@ -43,7 +47,6 @@ $('#design').on('change', () => {
         $("#color").val($("#color option:nth-child(n+4)").val());
     }
 });
-
 
 /* Register for Activities */
 
@@ -93,7 +96,6 @@ $('.activities').on('change', (e) => {
     });
 });
 
-
 /* Payment Info */
 
 //It sets the credit card option as the first and default option
@@ -116,22 +118,21 @@ $('#payment').on('change', () => {
         $('#credit-card').show();
         $('p').hide();
     }
-})
-
+});
 
 /* Validation */
 
 // Creating and appending the error messages to the DOM
-$('label[for="name"]').before(`<span id="error-name" class="errorMessage">⚠️ Name field can't be blank</span>`);
+$('label[for="name"]').before(`<span id="error-name" class="errorMessage">⚠️ Name field can't be empty</span>`);
 $('label[for="mail"]').before(`<span id="error-mail" class="errorMessage">⚠️ Email field must be a valid e-mail address</span>`);
-$('.activities').append(`<span id="error-act" class="errorMessage">⚠️ You must select at least one activity</span>`);
-$('#credit-card').before(`<span id="error-card" class="errorMessage">⚠️ The card number must be between 13 and 16 digits</span>`);
+$('.activities').append(`<span id="error-act" class="errorMessage">⚠️ Please select at least one activity</span>`);
+$('#credit-card').before(`<span id="error-card-blank" class="errorMessage">⚠️ Please enter a credit card number</span>`);
+$('#credit-card').before(`<span id="error-card-digit" class="errorMessage">⚠️ Please enter a number that is between 13 and 16 digits long.</span>`);
 $('#credit-card').before(`<span id="error-zip" class="errorMessage">⚠️ The Zip Code field should be 5-digit number</span>`);
 $('#credit-card').before(`<span id="error-cvv" class="errorMessage">⚠️ The CVV should be exactly 3 digits long</span>`);
 
 //Hide all the error messages from the DOM as initially default
 $('.errorMessage').hide();
-
 
 // Name Validator
 function isValidName(name) {
@@ -192,19 +193,29 @@ function isValidCcNumber(ccNumber) {
         //Using Regex to make sure the user provides a valid credit card number
         let validator = /^\d{13,16}$/.test(ccNumber);
         if (validator) {
-            $('#error-card').hide();
+            $('#error-card-blank').hide();
+            $('#error-card-digit').hide();
             $('#cc-num').prev().removeClass('errorLabel');
             $('#cc-num').removeClass('errorInput');
             return true;
+            //If the user submits a credit card number shorter than 13 or longer than 16 digits, it displayes one message.
+        } else if (ccNumber !== '') {
+            $('#error-card-blank').hide();
+            $('#error-card-digit').show();
+            $('#cc-num').prev().addClass('errorLabel');
+            $('#cc-num').addClass('errorInput');
+            return false;
+            //If the user submits a empty credit card field, it displayes a different message.
         } else {
-            $('#error-card').show();
+            $('#error-card-digit').hide();
+            $('#error-card-blank').show();
             $('#cc-num').prev().addClass('errorLabel');
             $('#cc-num').addClass('errorInput');
             return false;
         }
     } else {
         return true;
-    }
+    };
 };
 
 // Zip Code Validator
@@ -227,7 +238,7 @@ function isValidZipCode(zipCode) {
         }
     } else {
         return true;
-    }
+    };
 };
 
 // CVV Validator
@@ -250,9 +261,8 @@ function isValidCvv(cvv) {
         }
     } else {
         return true;
-    }
+    };
 };
-
 
 /* This Event Listener is a "RESET" for credit card errors warning, in case the user switches to Paypal or Bitcoin
  after trying credit card option unsuccessfully, the messages and display warning must be removed when switching
@@ -261,19 +271,15 @@ $('#payment').on('change', () => {
     const $paymentSelected = $('#payment').val();
     //If the payment option is paypal or bitcoin all error messages from previews credit card attemped must be removed.
     if ($paymentSelected === 'paypal' || $paymentSelected === 'bitcoin') {
-        $('#error-card').hide();
-        $('#error-cvv').hide();
-        $('#error-zip').hide();
+        $('.errorMessage').hide();
         $('#cc-num').prev().removeClass('errorLabel');
         $('#cc-num').removeClass('errorInput');
         $('#cvv').prev().removeClass('errorLabel');
         $('#cvv').removeClass('errorInput');
         $('#zip').prev().removeClass('errorLabel');
         $('#zip').removeClass('errorInput');
-
     };
-})
-
+});
 
 /*This (Master) funtion calls all validators and store the boolean value returned from each function in a variable.
 This value is compared to the next validator and the result is stored in the same variable. All validator must return
@@ -288,10 +294,42 @@ function isFormValid() {
     result = isValidZipCode($('#zip').val()) && result;
     result = isValidCvv($('#cvv').val()) && result;
     return result;
-}
+};
 
+//Real-time Error Message for name field.
+$('#name').on('input', (e) => {
+    const text = e.target.value;
+    isValidName(text);
+});
 
-//Event listener prevent the browser to send the information to the server in case the form has an invalid field.
+//Real-time Error Message for email field.
+$('#mail').on('input', (e) => {
+    const text = e.target.value;
+    isValidEmail(text);
+});
+
+//Real-time Error Message for activities.
+$('.activities').on('input', isActivityCheck);
+
+//Real-time Error Messages for credit card.
+$('#cc-num').on('input', (e) => {
+    const text = e.target.value;
+    isValidCcNumber(text);
+});
+
+//Real-time Error Message for zip code.
+$('#zip').on('input', (e) => {
+    const text = e.target.value;
+    isValidZipCode(text);
+});
+
+//Real-time Error Message for CVV.
+$('#cvv').on('input', (e) => {
+    const text = e.target.value;
+    isValidCvv(text);
+});
+
+//Event listener preventing the browser to send the data to the server in case the form has an invalid field.
 $('form').on('submit', (e) => {
     //If the isFormValid function returns false (based on the validator functions), the button won't submit the data.
     if (isFormValid() === false) {
