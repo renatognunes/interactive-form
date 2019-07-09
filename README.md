@@ -27,7 +27,3 @@ Basics methods and technics:
 - Events and Handlers
 - Debugging
 - CSS Selectors
-
-For Examiner:
-- The Credit Card field has mulitple error messages as required to exceed expectations.
-- All fields have real-time validation.(exceed expectations required just one field).
